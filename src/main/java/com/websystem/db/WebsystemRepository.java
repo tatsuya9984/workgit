@@ -1,4 +1,4 @@
-package com.websystem.entity;
+package com.websystem.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import com.websystem.entity.db.UserEntity;
 
 @Repository
 public class WebsystemRepository {

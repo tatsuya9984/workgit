@@ -1,55 +1,67 @@
 package com.websystem.entity.db;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
 public class UserEntity {
 	
-	private String userId;
+    @Id
+    @Column(name = "user_id")
+    private String userId;
     
-    private String password;
+    @Column(name = "family_name")
+    private String familyName;
     
-    private String userName;
+    @Column(name = "given_name")
+    private String givenName;
     
-    private String brith;
-    
-    private int age;
+    @Column(name = "mail_address")
+    private String mailAddress;
 
-	public String getUserId() {
-		return userId;
-	}
+    @Column(name = "sendable_flag")
+    private Boolean sendableFlag;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+      return userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserId(String userId) {
+      this.userId = userId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getFamilyName() {
+      return familyName;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setFamilyName(String familyName) {
+      this.familyName = familyName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public String getGivenName() {
+      return givenName;
+    }
 
-	public String getBrith() {
-		return brith;
-	}
+    public void setGivenName(String givenName) {
+      this.givenName = givenName;
+    }
 
-	public void setBrith(String brith) {
-		this.brith = brith;
-	}
+    public String getMailAddress() {
+      return mailAddress;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public void setMailAddress(String mailAddress) {
+      this.mailAddress = mailAddress;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
-    
+    public Boolean getSendableFlag() {
+      return sendableFlag;
+    }
+
+    public void setSendableFlag(Boolean sendableFlag) {
+      this.sendableFlag = sendableFlag;
+    }
 }

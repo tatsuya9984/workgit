@@ -14,7 +14,7 @@ public class RootController {
 		HttpSession session = req.getSession();
 		String id = (String)session.getAttribute("id");
 		if (id == null) {
-			return "redirect:/login";
+			return "redirect:login";
 		}
 		model.addAttribute("name", id);
 		return "top";

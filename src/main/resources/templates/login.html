@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>sign in</title>
+    <link href="/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"></link>
+  </head>
+  <body>
+  	<header id="header">
+  		タイトル
+  	</header>
+  	<div id="main-container">
+  		<div id="main-content">
+  		</div>
+  		<div id="right-content">
+  			<form method="post">
+  				<table>
+  					<tr>
+  						<td>ID</td>
+  						<td><input type="text" name="id"></td>
+  					</tr>
+  					<tr>
+  						<td>PASSWORD</td>
+  						<td><input type="password" name="password"></td>
+  					</tr>
+  					<tr>
+  						<td colspan="2"><input type="submit" value="Sign In"></td>
+  					</tr>
+  				</table>
+  				<p th:text="${errorMsg}"></p>
+  			</form>
+  		</div>
+  	</div>
+  </body>
+</html>

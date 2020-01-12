@@ -6,12 +6,10 @@ import java.util.Map;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
-public class SignController {
+public class SignUpController {
 	private Map<String,String> radioSex;
 	 
 	private Map<String,String> initRadioSex(){

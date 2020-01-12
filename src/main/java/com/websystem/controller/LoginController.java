@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.websystem.entity.UserEntity;
-import com.websystem.entity.WebsystemRepository;
+import com.websystem.db.WebsystemRepository;
+import com.websystem.entity.db.UserEntity;
 
 @Controller
 @RequestMapping("/login")

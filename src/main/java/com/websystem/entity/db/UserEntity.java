@@ -1,4 +1,4 @@
-package com.websystem.entity;
+package com.websystem.entity.db;
 
 public class UserEntity {
 	

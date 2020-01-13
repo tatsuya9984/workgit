@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>sign in</title>
+    <link href="/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"></link>
+  </head>
+  <body>
+  	<header id="header">
+  		タイトル
+  	</header>
+  	<div id="all-content">
+  		<div id="left-content">
+  			<div id="menu-icon" onclick="changeMenu();">
+  				<div id="menu-bar-first" class="menu-icon-bar"></div>
+  				<div id="menu-bar-second" class="menu-icon-bar"></div>
+  				<div id="menu-bar-third" class="menu-icon-bar"></div>
+  			</div>
+  			<div id="menu" class="menu-close-width">
+  				<ul>
+  					<li class="menu-title">ユーザ情報</li>
+  					<li class="menu-list">プロファイル</li>
+  					<li class="menu-list">ユーザ情報編集</li>
+  					<li class="menu-title">ブログ</li>
+  					<li class="menu-list">投稿する</li>
+  					<li class="menu-title">管理</li>
+  					<li class="menu-list"><a href="/logout">ログアウト</a></li>
+  				</ul>
+  			</div>
+  		</div>
+  		<div id="blog">
+  			<div class="blog-item" th:each="item : ${items}">
+  				<div th:text="${item.title}"></div>
+  				<hr style="margin: 0;">
+  				<div th:text="${item.body}"></div>
+  			</div>
+  		</div>
+  	</div>
+  	
+  	<script type="text/javascript">
+  		var menuStatus = false;
+  		var first = document.getElementById('menu-bar-first');
+		var second = document.getElementById('menu-bar-second');
+		var third = document.getElementById('menu-bar-third');
+		var menu = document.getElementById('menu');
+  		var openMenu = function() {
+  			first.classList.add('menu-icon-close-normal');
+  			second.classList.add('non-display');
+  			third.classList.add('menu-icon-close-mirror');
+  			menu.classList.add('menu-open-width');
+  			menu.classList.remove('menu-close-width');
+  		}
+  		var closeMenu = function() {
+  			first.classList.remove('menu-icon-close-normal');
+  			second.classList.remove('non-display');
+  			third.classList.remove('menu-icon-close-mirror');
+  			menu.classList.remove('menu-open-width');
+  			menu.classList.add('menu-close-width');
+  		}
+  		var changeMenu = function() {
+  			if (menuStatus == true) {
+  				closeMenu();
+  				menuStatus = false;
+  			} else {
+  				openMenu();
+  				menuStatus = true;
+  			}
+  		};
+  	</script>
+  </body>
+</html>

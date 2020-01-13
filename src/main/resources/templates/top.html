@@ -16,12 +16,22 @@
   				<div id="menu-bar-second" class="menu-icon-bar"></div>
   				<div id="menu-bar-third" class="menu-icon-bar"></div>
   			</div>
-  			<div id="menu" class="menu-close-width">test</div>
+  			<div id="menu" class="menu-close-width">
+  				<ul>
+  					<li class="menu-title">ユーザ情報</li>
+  					<li class="menu-list">プロファイル</li>
+  					<li class="menu-list">ユーザ情報編集</li>
+  					<li class="menu-title">ブログ</li>
+  					<li class="menu-list">投稿する</li>
+  					<li class="menu-title">管理</li>
+  					<li class="menu-list"><a href="/logout">ログアウト</a></li>
+  				</ul>
+  			</div>
   		</div>
   		<div id="blog">
   			<div class="blog-item" th:each="item : ${items}">
   				<div th:text="${item.title}"></div>
-  				<hr>
+  				<hr style="margin: 0;">
   				<div th:text="${item.body}"></div>
   			</div>
   		</div>

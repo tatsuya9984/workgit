@@ -6,12 +6,17 @@ body {
   width: 100%;
 }
 
-#main-content {
+#main-content-image {
   width: 75%;
   height: 550px;
   float: left;
   background-image: url("https://www.shibaura1101.com/fassion/topback.png");
   background-size: cover;
+}
+
+#main-content {
+  width: 100%;
+  height: auto;
 }
 
 #right-content {
@@ -28,6 +33,41 @@ body {
   overflow: hidden;
 }
 
+#menu ul {
+  list-style: none;
+  padding-left: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.menu-title {
+  background-color: #8EB8FF;
+}
+
+.menu-list {
+  background-color: #BAD3FF;
+  -moz-transition: .2s;
+  -webkit-transition: .2s;
+  -o-transition: .2s;
+  -ms-transition: .2s;
+  transition: .2s;
+}
+.menu-list:hover {
+  background-color: #EDFFBE;
+  -moz-transition: .2s;
+  -webkit-transition: .2s;
+  -o-transition: .2s;
+  -ms-transition: .2s;
+  transition: .2s;
+}
+
+.menu-list a {
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
 .menu-close-width {
   width: 0px;
   -moz-transition: .4s;
@@ -39,7 +79,6 @@ body {
 
 .menu-open-width {
   width: 250px;
-  background-color: red;
   -moz-transition: .4s;
   -webkit-transition: .4s;
   -o-transition: .4s;
@@ -50,7 +89,7 @@ body {
 #header {
   width: 100%;
   text-align: right;
-  background-color:#6a88ff;
+  background-color: #6a88ff;
   box-sizing: border-box;
   padding: 15px;
   font-size: 30px;
@@ -58,7 +97,7 @@ body {
 }
 
 .form_table {
-  margin: 100px auto;
+  margin: 100px auto 0 auto;
 }
 
 .form_table tr td {
@@ -121,11 +160,29 @@ body {
 }
 
 #blog {
-  margin-top: 50px;
+  padding-top: 50px;
 }
 
 .blog-item {
   width: 600px;
   margin: 0 auto 20px auto;
   border: 2px solid #666666;
+}
+
+.blog-item div {
+  margin: 5px;
+}
+
+.input-ok {
+  border: 2px #99FF66 solid;
+}
+
+.input-ng {
+  border: 2px red solid;
+}
+
+.center-link {
+  text-align: center;
+  margin: auto;
+  display: block;
 }

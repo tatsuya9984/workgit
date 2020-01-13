@@ -14,6 +14,7 @@ import com.websystem.db.AuthRepository;
 import com.websystem.db.UserRepository;
 import com.websystem.entity.db.AuthEntity;
 import com.websystem.entity.db.UserEntity;
+import com.websystem.service.MailService;
 
 @Controller
 public class SignUpController {
@@ -21,6 +22,8 @@ public class SignUpController {
   private AuthRepository authRepo;
   @Autowired
   private UserRepository userRepo;
+  @Autowired
+  private MailService mailService;
  
   @GetMapping("/signup")
   public String getSignUp(Model model, HttpServletRequest req) {
@@ -71,6 +74,21 @@ public class SignUpController {
     }
     HttpSession session = req.getSession();
     session.setAttribute("id", userId);
+    if (sendableFlag) {
+      String body = mailService.createBuilder()
+          .addNewLine("新規ユーザ登録完了")
+          .addNewLine("")
+          .addNewLine("----------ユーザ情報----------")
+          .addNewLine("ユーザID：" + userId)
+          .addNewLine("パスワード：" + password)
+          .addNewLine("氏名：" + familyName + " " + givenName)
+          .addNewLine("-------------------------------")
+          .addNewLine("")
+          .addNewLine("サービス利用は以下リンクより")
+          .addNewLine("http://localhost:8080/")
+          .toString();
+      mailService.sendMail(mailAddress, "新規ユーザ登録完了のお知らせ", body);
+    }
     return "redirect:";
   }
 }

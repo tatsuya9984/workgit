@@ -11,12 +11,11 @@ import com.websystem.entity.line.AuthorizeEntity;
 
 @Service
 public class LineService {
-  @Autowired
-  private RestTemplate restTemplate;
   @Value("${lineservice.oauth.authorize}") 
   private String authorizeURL;
 
   public void authorize() {
+    RestTemplate restTemplate = new RestTemplate();
     AuthorizeEntity authorizeEntity = restTemplate.getForObject(authorizeURL, AuthorizeEntity.class);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$");
     System.out.println(authorizeEntity.getCode());

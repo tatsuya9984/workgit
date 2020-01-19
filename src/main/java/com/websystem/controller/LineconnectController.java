@@ -1,5 +1,7 @@
 package com.websystem.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,12 @@ public class LineconnectController {
 
   @RequestMapping(method=RequestMethod.GET)
   public String connect() {
-    lineService.authorize();
+    try {
+      lineService.authorize();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     return "top";
    }
 }

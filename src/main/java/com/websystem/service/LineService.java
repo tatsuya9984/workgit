@@ -16,8 +16,8 @@ public class LineService {
 
   public void authorize() {
     RestTemplate restTemplate = new RestTemplate();
-    AuthorizeEntity authorizeEntity = restTemplate.getForObject(authorizeURL, AuthorizeEntity.class);
+    String authorizeEntity = restTemplate.getForObject(authorizeURL, String.class);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$");
-    System.out.println(authorizeEntity.getCode());
+    System.out.println(authorizeEntity);
   }
 }

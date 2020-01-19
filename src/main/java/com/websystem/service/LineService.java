@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.websystem.entity.line.AuthorizeEntity;
+import com.websystem.entity.line.TokenRequest;
+import com.websystem.entity.line.TokenResponse;
 
 import okhttp3.Interceptor;
 import okhttp3.Interceptor.Chain;
@@ -23,18 +25,8 @@ public class LineService {
   @Value("${lineservice.oauth.authorize}") 
   private String authorizeURL;
 
-  private OkHttpClient mClient = new OkHttpClient.Builder()
-      .addNetworkInterceptor(new Interceptor() {
-          @Override
-          public Response intercept(Chain chain) throws IOException {
-              return chain.proceed(chain.request());
-          }
-      })
-      .build();
-
-  public void authorize() throws IOException {
-    Response r = mClient.newCall(new Request.Builder().url(authorizeURL).build()).execute();
-    System.out.println("$$$$$$$$$$$$$$$$$$$$$");
-    System.out.println(r.request().url().toString());
+  public TokenResponse getToken(String code) {
+    RestTemplate restTemplate = new RestTemplate();
+    return restTemplate.postForObject(authorizeURL, new TokenRequest(code), TokenResponse.class);
   }
 }

@@ -23,8 +23,8 @@ public class LineconnectController {
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(
       @RequestParam(name = "code", required = true) String code) {
-    TokenResponse res = lineService.getToken(code);
-    System.out.println("actoken:"+res.getAccess_token());
+    //TokenResponse res = lineService.getToken(code);
+    //System.out.println("actoken:"+res.getAccess_token());
     return "redirect:top";
    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.websystem.entity.line.TokenResponse;
 import com.websystem.service.LineService;
 
 @Controller
@@ -22,7 +23,8 @@ public class LineconnectController {
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(
       @RequestParam(name = "code", required = true) String code) {
-    System.out.println(code);
-    return "top";
+    TokenResponse res = lineService.getToken(code);
+    System.out.println("actoken:"+res.getAccess_token());
+    return "redirect:top";
    }
 }

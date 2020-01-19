@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.websystem.db.AuthRepository;
-import com.websystem.db.UserRepository;
+import com.websystem.db.UsersRepository;
 import com.websystem.entity.db.AuthEntity;
-import com.websystem.entity.db.UserEntity;
+import com.websystem.entity.db.UsersEntity;
 import com.websystem.service.MailService;
 
 @Controller
@@ -21,7 +21,7 @@ public class SignUpController {
   @Autowired
   private AuthRepository authRepo;
   @Autowired
-  private UserRepository userRepo;
+  private UsersRepository userRepo;
   @Autowired
   private MailService mailService;
  
@@ -56,7 +56,7 @@ public class SignUpController {
       auth.setPassword(password);
       authRepo.saveAndFlush(auth);
 
-      UserEntity user = new UserEntity();
+      UsersEntity user = new UsersEntity();
       user.setUserId(userId);
       user.setFamilyName(familyName);
       user.setGivenName(givenName);

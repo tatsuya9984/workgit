@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.websystem.service.LineService;
 
@@ -18,14 +19,10 @@ public class LineconnectController {
   @Autowired
   private LineService lineService;
 
-  @RequestMapping(method=RequestMethod.GET)
-  public String connect() {
-    try {
-      lineService.authorize();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  @RequestMapping(value="/callback", method=RequestMethod.GET)
+  public String connect(
+      @RequestParam(name = "code", required = true) String code) {
+    System.out.println(code);
     return "top";
    }
 }

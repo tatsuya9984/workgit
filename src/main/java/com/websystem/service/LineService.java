@@ -2,6 +2,7 @@ package com.websystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class LineService {
 
   public void authorize() {
     RestTemplate restTemplate = new RestTemplate();
-    String authorizeEntity = restTemplate.getForObject(authorizeURL, String.class);
+    HttpEntity<String> authorizeEntity = restTemplate.getForObject(authorizeURL, HttpEntity.class);
     System.out.println("$$$$$$$$$$$$$$$$$$$$$");
-    System.out.println(authorizeEntity);
+    System.out.println(authorizeEntity.getHeaders().getLocation().toString());
   }
 }

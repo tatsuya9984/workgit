@@ -24,8 +24,8 @@ public class LineconnectController {
   public String connect(
       @RequestParam(name = "code", required = true) String code) {
     System.out.println(code);
-    //TokenResponse res = lineService.getToken(code);
-    //System.out.println("actoken:"+res.getAccess_token());
-    return "redirect:top";
+    TokenResponse res = lineService.getToken(code);
+    System.out.println("actoken:"+res.getAccess_token());
+    return "redirect:/top";
    }
 }

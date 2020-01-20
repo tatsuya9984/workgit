@@ -41,7 +41,6 @@ public class LineService {
 
     RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(URI.create("https://api.line.me/oauth2/v2.1/token"))
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .accept(MediaType.APPLICATION_FORM_URLENCODED)
             .body(map);
 
     return restTemplate.exchange(request, TokenResponse.class).getBody();

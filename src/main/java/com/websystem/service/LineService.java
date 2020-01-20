@@ -1,13 +1,18 @@
 package com.websystem.service;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.websystem.entity.line.AuthorizeEntity;
@@ -27,6 +32,18 @@ public class LineService {
 
   public TokenResponse getToken(String code) {
     RestTemplate restTemplate = new RestTemplate();
-    return restTemplate.postForObject(authorizeURL, new TokenRequest(code), TokenResponse.class);
+    MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
+    map.add("grant_type", "authorization_code");
+    map.add("code", code);
+    map.add("redirect_uri", "https://fassion-talk.herokuapp.com/lineconnect/callback");
+    map.add("client_id", "1653778420");
+    map.add("client_secret", "d21735f1b7c0c395f9fedc5075ba4f8f");
+
+    RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(URI.create("https://api.line.me/oauth2/v2.1/token"))
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .accept(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(map);
+
+    return restTemplate.exchange(request, TokenResponse.class).getBody();
   }
 }

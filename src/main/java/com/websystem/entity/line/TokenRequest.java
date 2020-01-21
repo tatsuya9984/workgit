@@ -7,10 +7,10 @@ public class TokenRequest {
   private String client_id;
   private String client_secret;
 
-  public TokenRequest(String code) {
+  public TokenRequest(String code, String path) {
     grant_type = "authorization_code";
     this.code = code;
-    redirect_uri = "https://fassion-talk.herokuapp.com/lineconnect/callback";
+    redirect_uri = "https://fassion-talk.herokuapp.com/lineconnect/" + path;
     client_id = "1653778420";
     client_secret = "d21735f1b7c0c395f9fedc5075ba4f8f";
   }

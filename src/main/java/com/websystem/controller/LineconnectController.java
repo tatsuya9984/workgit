@@ -27,7 +27,7 @@ public class LineconnectController {
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
-    TokenResponse tokenResponse = lineService.getToken(code);
+    TokenResponse tokenResponse = lineService.getToken(code, "callback");
     ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
     HttpSession session = req.getSession();
     AuthEntity auth = authRepo.findByUserIdIs((String)session.getAttribute("id"));
@@ -41,7 +41,7 @@ public class LineconnectController {
   public String login(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
     System.out.println("getToken");
-    TokenResponse tokenResponse = lineService.getToken(code);
+    TokenResponse tokenResponse = lineService.getToken(code, "login");
     System.out.println("getProfile");
     ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
     AuthEntity auth = authRepo.findByLineIdIs(profileResponse.getUserId());

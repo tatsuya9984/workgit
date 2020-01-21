@@ -34,12 +34,12 @@ public class LineService {
   @Value("${lineservice.profile}")
   private String getProfileURL;
 
-  public TokenResponse getToken(String code) {
+  public TokenResponse getToken(String code, String path) {
     RestTemplate restTemplate = new RestTemplate();
     MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
     map.add("grant_type", "authorization_code");
     map.add("code", code);
-    map.add("redirect_uri", "https://fassion-talk.herokuapp.com/lineconnect/callback");
+    map.add("redirect_uri", "https://fassion-talk.herokuapp.com/lineconnect/" + path);
     map.add("client_id", "1653778420");
     map.add("client_secret", "d21735f1b7c0c395f9fedc5075ba4f8f");
 

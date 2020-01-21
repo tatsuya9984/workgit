@@ -7,5 +7,6 @@ import com.websystem.entity.db.AuthEntity;
 
 @Repository
 public interface AuthRepository extends JpaRepository<AuthEntity, String> {
-    public AuthEntity findByUserIdIs(String password);
+    public AuthEntity findByUserIdIs(String userId);
+    public AuthEntity findByLineIdIs(String lineId);
 }

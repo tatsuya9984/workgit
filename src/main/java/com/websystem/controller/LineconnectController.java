@@ -29,7 +29,6 @@ public class LineconnectController {
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
-    System.out.println(code);
     TokenResponse tokenResponse = lineService.getToken(code);
     ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
     HttpSession session = req.getSession();
@@ -39,4 +38,29 @@ public class LineconnectController {
     authRepo.saveAndFlush(auth);
     return "redirect:/";
    }
+
+  @RequestMapping(value="/login", method=RequestMethod.GET)
+  public String login(HttpServletRequest req,
+      @RequestParam(name = "code", required = true) String code) {
+    TokenResponse tokenResponse = lineService.getToken(code);
+    ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
+    AuthEntity auth = authRepo.findByLineIdIs(profileResponse.getUserId());
+    if (auth == null) {
+      return "redirect:/login";
+    }
+    HttpSession session = req.getSession();
+    session.setAttribute("id", auth.getUserId());
+    session.setAttribute("lineConnect", true);
+    return "redirect:/";
+  }
+
+  @RequestMapping(value="/invalidate", method=RequestMethod.GET)
+  public String login(HttpServletRequest req) {
+    HttpSession session = req.getSession();
+    AuthEntity auth = authRepo.findByUserIdIs((String)session.getAttribute("id"));
+    auth.setLineId(null);
+    authRepo.saveAndFlush(auth);
+    session.setAttribute("lineConnect", false);
+    return "redirect:/";
+  }
 }

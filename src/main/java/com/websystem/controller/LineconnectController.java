@@ -35,6 +35,7 @@ public class LineconnectController {
     HttpSession session = req.getSession();
     AuthEntity auth = authRepo.findByUserIdIs((String)session.getAttribute("id"));
     auth.setLineId(profileResponse.getUserId());
+    session.setAttribute("lineConnect", true);
     authRepo.saveAndFlush(auth);
     return "redirect:/";
    }

@@ -1,14 +1,11 @@
 package com.websystem.controller;
 
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +23,6 @@ public class LineconnectController {
   private LineService lineService;
   @Autowired
   private AuthRepository authRepo;
-  @Autowired
-  private Logger logger;
 
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(HttpServletRequest req,
@@ -45,9 +40,9 @@ public class LineconnectController {
   @RequestMapping(value="/login", method=RequestMethod.GET)
   public String login(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
-    logger.info("getToken");
+    System.out.println("getToken");
     TokenResponse tokenResponse = lineService.getToken(code);
-    logger.info("getProfile");
+    System.out.println("getProfile");
     ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
     AuthEntity auth = authRepo.findByLineIdIs(profileResponse.getUserId());
     if (auth == null) {

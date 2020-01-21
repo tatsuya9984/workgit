@@ -27,7 +27,7 @@ public class RootController {
 			return "redirect:login";
 		}
 		List<NoteEntity> items = noteRepo.findAll();
-		model.addAttribute("name", id);
+		model.addAttribute("lineConnect", session.getAttribute("lineConnect"));
 		model.addAttribute("items", items);
 		return "top";
 	}

@@ -6,6 +6,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -16,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.websystem.entity.line.AuthorizeEntity;
+import com.websystem.entity.line.ProfileResponse;
 import com.websystem.entity.line.TokenRequest;
 import com.websystem.entity.line.TokenResponse;
 
@@ -29,6 +31,8 @@ import okhttp3.Response;
 public class LineService {
   @Value("${lineservice.oauth.authorize}") 
   private String authorizeURL;
+  @Value("${lineservice.profile}")
+  private String getProfileURL;
 
   public TokenResponse getToken(String code) {
     RestTemplate restTemplate = new RestTemplate();
@@ -44,5 +48,14 @@ public class LineService {
             .body(map);
 
     return restTemplate.exchange(request, TokenResponse.class).getBody();
+  }
+
+  public ProfileResponse getProfile(String accessToken) {
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Authorization", "Bearer "+accessToken);
+    HttpEntity<String> entity = new HttpEntity<String>(headers);
+    ResponseEntity<ProfileResponse> response = restTemplate.exchange(getProfileURL, HttpMethod.GET, entity, ProfileResponse.class);
+    return response.getBody();
   }
 }

@@ -16,6 +16,9 @@ public class AuthEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "line_id")
+    private String lineId;
+
     public String getUserId() {
       return userId;
     }
@@ -30,5 +33,13 @@ public class AuthEntity {
 
     public void setPassword(String password) {
       this.password = password;
+    }
+
+    public String getLineId() {
+      return lineId;
+    }
+
+    public void setLineId(String lineId) {
+      this.lineId = lineId;
     }
 }

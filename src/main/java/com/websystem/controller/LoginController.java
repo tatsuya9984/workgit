@@ -34,6 +34,11 @@ public class LoginController {
 		
 		if(auth != null && pswd.equals(auth.getPassword())) {
 			session.setAttribute("id", id);
+			if(auth.getLineId() != null) {
+			  session.setAttribute("lineConnect", true);
+			} else {
+			  session.setAttribute("lineConnect", false);
+			}
 		} else {
 			model.addAttribute("errorMsg", "IDまたはパスワードが違います");
 			return "login";

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.websystem.entity.db.FassionEntity;
 
+/**
+ * 服情報DBアクセス用
+ */
 @Repository
 public interface FassionRepository extends JpaRepository<FassionEntity, String> {
 

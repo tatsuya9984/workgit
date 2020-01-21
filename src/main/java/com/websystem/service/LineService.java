@@ -1,10 +1,8 @@
 package com.websystem.service;
 
-import java.io.IOException;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,46 +14,62 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.websystem.entity.line.AuthorizeEntity;
+import com.websystem.common.config.Config;
 import com.websystem.entity.line.ProfileResponse;
-import com.websystem.entity.line.TokenRequest;
 import com.websystem.entity.line.TokenResponse;
 
-import okhttp3.Interceptor;
-import okhttp3.Interceptor.Chain;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
+/**
+ * LINEサービス
+ */
 @Service
 public class LineService {
-  @Value("${lineservice.oauth.authorize}") 
-  private String authorizeURL;
-  @Value("${lineservice.profile}")
-  private String getProfileURL;
+  @Autowired
+  private Config config;
 
+  /**
+   * アクセストークンを取得する
+   * 
+   * @param code 許可コード
+   * @param path ベースパス以降のパス
+   * @return
+   */
   public TokenResponse getToken(String code, String path) {
     RestTemplate restTemplate = new RestTemplate();
     MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
     map.add("grant_type", "authorization_code");
     map.add("code", code);
-    map.add("redirect_uri", "https://fassion-talk.herokuapp.com/lineconnect/" + path);
-    map.add("client_id", "1653778420");
-    map.add("client_secret", "d21735f1b7c0c395f9fedc5075ba4f8f");
+    map.add("redirect_uri", config.getBaseURL() + "lineconnect/" + path);
+    map.add("client_id", config.getClientID());
+    map.add("client_secret", config.getClientSecret());
 
-    RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(URI.create("https://api.line.me/oauth2/v2.1/token"))
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(map);
+    // 必要情報を入れ込んでPOST送信用リクエストを作成    
+    RequestEntity<MultiValueMap<String, String>> request = 
+        RequestEntity.post(URI.create(config.getAccessTokenURL()))
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(map);
 
     return restTemplate.exchange(request, TokenResponse.class).getBody();
   }
 
+  /**
+   * プロフィール情報を取得する
+   * 
+   * @param accessToken アクセストークン
+   * @return
+   */
   public ProfileResponse getProfile(String accessToken) {
     RestTemplate restTemplate = new RestTemplate();
+
+    // ヘッダーの作成(アクセストークンを入れ込む)
     HttpHeaders headers = new HttpHeaders();
     headers.set("Authorization", "Bearer "+accessToken);
+
+    // ヘッダーを入れ込んだエンティティの作成
     HttpEntity<String> entity = new HttpEntity<String>(headers);
-    ResponseEntity<ProfileResponse> response = restTemplate.exchange(getProfileURL, HttpMethod.GET, entity, ProfileResponse.class);
+
+    // プロフィール情報取得API発行
+    ResponseEntity<ProfileResponse> response =
+        restTemplate.exchange(config.getGetProfileURL(), HttpMethod.GET, entity, ProfileResponse.class);
     return response.getBody();
   }
 }

@@ -5,32 +5,43 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 服情報エンティティ
+ */
 @Entity
 @Table(name = "fassion", schema = "public")
 public class FassionEntity {
 
+  /** ファッションID */
   @Id
   @Column(name = "fassion_id")
   private String fassionId;
 
+  /** 投稿ID */
   @Column(name = "note_id")
   private String noteId;
 
+  /** 画像リソースパス */
   @Column(name = "source")
   private String source;
 
+  /** 画像代用メッセージ */
   @Column(name = "alt_message")
   private String altMessage;
 
+  /** おすすめ季節 */
   @Column(name = "season")
   private String season;
 
+  /** おすすめ月 */
   @Column(name = "month")
   private int month;
 
+  /** 会社名 */
   @Column(name = "companey")
   private String companey;
 
+  /** 会社URL */
   @Column(name = "url")
   private String url;
 

@@ -16,6 +16,9 @@ import com.websystem.entity.db.AuthEntity;
 import com.websystem.entity.db.UsersEntity;
 import com.websystem.service.MailService;
 
+/**
+ * Sign Upコントローラ
+ */
 @Controller
 public class SignUpController {
   @Autowired
@@ -24,12 +27,33 @@ public class SignUpController {
   private UsersRepository userRepo;
   @Autowired
   private MailService mailService;
- 
+
+  /**
+   * 新規ユーザ登録画面用コントローラ
+   * 
+   * @param model
+   * @param req
+   * @return
+   */
   @GetMapping("/signup")
   public String getSignUp(Model model, HttpServletRequest req) {
     return "signup";
   }
- 
+
+  /**
+   * 新規ユーザ登録処理コントローラ
+   * 
+   * @param model
+   * @param req
+   * @param userId ログイン用ユーザID
+   * @param password パスワード
+   * @param rePassword パスワード確認用
+   * @param familyName 姓
+   * @param givenName 名
+   * @param mailAddress 通知用メールアドレス
+   * @param sendableFlag メール配信フラグ
+   * @return
+   */
   @PostMapping("/signup")
   public String postSignUp(Model model, HttpServletRequest req,
       @RequestParam(name = "user_id", required = true) String userId,
@@ -40,9 +64,10 @@ public class SignUpController {
       @RequestParam(name = "mail_address", required = true) String mailAddress,
       @RequestParam(name = "sendable_flag", required = false) boolean sendableFlag) {
     if (sendableFlag != true) {
+      // メール配信可能でない場合はメール配信フラグをOFF
       sendableFlag = false;
     }
-    
+
     try {
       if (!password.equals(rePassword)) {
         throw new Exception("パスワードが一致しませんでした");
@@ -51,11 +76,14 @@ public class SignUpController {
       if (authRepo.findByUserIdIs(userId) != null) {
         throw new Exception("このユーザーIDはすでに利用されています");
       }
+
+      // 認証情報登録
       AuthEntity auth = new AuthEntity();
       auth.setUserId(userId);
       auth.setPassword(password);
       authRepo.saveAndFlush(auth);
 
+      // ユーザ情報登録
       UsersEntity user = new UsersEntity();
       user.setUserId(userId);
       user.setFamilyName(familyName);
@@ -63,7 +91,9 @@ public class SignUpController {
       user.setMailAddress(mailAddress);
       user.setSendableFlag(sendableFlag);
       userRepo.saveAndFlush(user);
+
     } catch (Exception e) {
+      // デフォルト値用モデル作成
       model.addAttribute("errorMsg", e.getMessage());
       model.addAttribute("user_id", userId);
       model.addAttribute("fimily_name", familyName);
@@ -72,9 +102,12 @@ public class SignUpController {
       model.addAttribute("sendable_flag", sendableFlag);
       return "signup";
     }
+
+    // 新規ユーザ登録後はログイン済みにする
     HttpSession session = req.getSession();
     session.setAttribute("id", userId);
     if (sendableFlag) {
+      // メール配信フラグがONの場合はメール送信
       String body = mailService.createBuilder()
           .addNewLine("新規ユーザ登録完了")
           .addNewLine("")
@@ -89,6 +122,7 @@ public class SignUpController {
           .toString();
       mailService.sendMail(mailAddress, "新規ユーザ登録完了のお知らせ", body);
     }
+
     return "redirect:";
   }
 }

@@ -1,10 +1,19 @@
 package com.websystem.entity.line;
 
+/**
+ * プロフィール情報取得APIレスポンス
+ * 参考：https://developers.line.biz/ja/docs/social-api/getting-user-profiles/
+ */
 public class ProfileResponse {
+  /** LineID */
   private String userId;
+  /** ディスプレイ名 */
   private String displayName;
+  /** トプ画パス */
   private String pictureUrl;
+  /** 一言 */
   private String statusMessage;
+
   public String getUserId() {
     return userId;
   }

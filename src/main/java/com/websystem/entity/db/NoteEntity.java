@@ -7,26 +7,35 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 投稿情報エンティティ
+ */
 @Entity
 @Table(name = "note", schema = "public")
 public class NoteEntity {
 
+  /** 投稿ID */
   @Id
   @Column(name = "note_id")
   private String noteId;
 
+  /** 投稿者ID */
   @Column(name = "contributor_id")
   private String contributorId;
 
+  /** タイトル */
   @Column(name = "title_name")
   private String title;
 
+  /** 内容 */
   @Column(name = "body")
   private String body;
 
+  /** ファッションIDリスト */
   @Column(name = "fassion_id_list")
   private String fassionIdList;
 
+  /** 投稿日 */
   @Column(name = "created_day")
   private Date createdDate;
 

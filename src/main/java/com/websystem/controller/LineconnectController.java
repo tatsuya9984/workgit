@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.websystem.constant.WebsystemConst.LineConst;
+import com.websystem.constant.WebsystemConst.SessionConst;
 import com.websystem.db.AuthRepository;
 import com.websystem.entity.db.AuthEntity;
 import com.websystem.entity.line.ProfileResponse;
 import com.websystem.entity.line.TokenResponse;
 import com.websystem.service.LineService;
 
+/**
+ * ラインID連携コントローラ
+ */
 @Controller
 @RequestMapping("/lineconnect")
 public class LineconnectController {
@@ -24,43 +29,88 @@ public class LineconnectController {
   @Autowired
   private AuthRepository authRepo;
 
+  /**
+   * 許可コード受付コントローラ
+   * 機能：アクセストークン・プロファイル情報を取得する
+   * 
+   * @param req
+   * @param code 許可コード
+   * @return
+   */
   @RequestMapping(value="/callback", method=RequestMethod.GET)
   public String connect(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
-    TokenResponse tokenResponse = lineService.getToken(code, "callback");
-    ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
+    // ログインチェック
     HttpSession session = req.getSession();
-    AuthEntity auth = authRepo.findByUserIdIs((String)session.getAttribute("id"));
-    auth.setLineId(profileResponse.getUserId());
-    session.setAttribute("lineConnect", true);
-    authRepo.saveAndFlush(auth);
-    return "redirect:/";
-   }
+    String id = (String)session.getAttribute(SessionConst.ID);
+    if (id == null) {
+      return "redirect:/login";
+    }
 
+    // アクセストークンの取得
+    TokenResponse tokenResponse = lineService.getToken(code, LineConst.CALLBACK);
+    // プロファイルの取得
+    ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
+
+    // LineIDを権限情報に設定
+    AuthEntity auth = authRepo.findByUserIdIs(id);
+    auth.setLineId(profileResponse.getUserId());
+    session.setAttribute(SessionConst.LINE_CONNECT, true);
+    authRepo.saveAndFlush(auth);
+
+    // トップ画面へリダイレクト
+    return "redirect:/";
+  }
+
+  /**
+   * LINEログイン受付コントローラ
+   * 
+   * @param req
+   * @param code 許可コード
+   * @return
+   */
   @RequestMapping(value="/login", method=RequestMethod.GET)
   public String login(HttpServletRequest req,
       @RequestParam(name = "code", required = true) String code) {
-    System.out.println("getToken");
-    TokenResponse tokenResponse = lineService.getToken(code, "login");
-    System.out.println("getProfile");
+    // アクセストークンの取得
+    TokenResponse tokenResponse = lineService.getToken(code, LineConst.LOGIN);
+    // プロファイル情報の取得
     ProfileResponse profileResponse = lineService.getProfile(tokenResponse.getAccess_token());
+
+    // LINE_IDから認証情報を取得
     AuthEntity auth = authRepo.findByLineIdIs(profileResponse.getUserId());
     if (auth == null) {
       return "redirect:/login";
     }
+    // LINE_IDに対応する認証情報があればログイン済みにする
     HttpSession session = req.getSession();
-    session.setAttribute("id", auth.getUserId());
-    session.setAttribute("lineConnect", true);
+    session.setAttribute(SessionConst.ID, auth.getUserId());
+    session.setAttribute(SessionConst.LINE_CONNECT, true);
+
     return "redirect:/";
   }
 
+  /**
+   * ラインID連携の無効化
+   * 
+   * @param req
+   * @return
+   */
   @RequestMapping(value="/invalidate", method=RequestMethod.GET)
   public String login(HttpServletRequest req) {
     HttpSession session = req.getSession();
-    AuthEntity auth = authRepo.findByUserIdIs((String)session.getAttribute("id"));
+    String id = (String)session.getAttribute(SessionConst.ID);
+    // ログインチェック
+    if (id == null) {
+      return "redirect:/login";
+    }
+
+    // ログイン済みの場合、ログインユーザIDに紐づくLINE_IDを削除
+    AuthEntity auth = authRepo.findByUserIdIs(id);
     auth.setLineId(null);
     authRepo.saveAndFlush(auth);
-    session.setAttribute("lineConnect", false);
+    session.setAttribute(SessionConst.LINE_CONNECT, false);
+
     return "redirect:/";
   }
 }

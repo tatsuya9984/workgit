@@ -17,6 +17,7 @@ import com.websystem.entity.db.AuthEntity;
 import com.websystem.entity.line.ProfileResponse;
 import com.websystem.entity.line.TokenResponse;
 import com.websystem.service.LineService;
+import com.websystem.service.MessageService;
 
 /**
  * ラインID連携コントローラ
@@ -28,6 +29,8 @@ public class LineconnectController {
   private LineService lineService;
   @Autowired
   private AuthRepository authRepo;
+  @Autowired
+  private MessageService messageService;
 
   /**
    * 許可コード受付コントローラ
@@ -86,6 +89,9 @@ public class LineconnectController {
     HttpSession session = req.getSession();
     session.setAttribute(SessionConst.ID, auth.getUserId());
     session.setAttribute(SessionConst.LINE_CONNECT, true);
+
+    // 挨拶文をLINEへプッシュ
+    messageService.pushHelloMessage(auth.getLineId());
 
     return "redirect:/";
   }

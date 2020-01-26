@@ -61,6 +61,9 @@ public class LineconnectController {
     session.setAttribute(SessionConst.LINE_CONNECT, true);
     authRepo.saveAndFlush(auth);
 
+    // 挨拶文をLINEへプッシュ
+    messageService.pushHelloMessage(auth.getLineId());
+
     // トップ画面へリダイレクト
     return "redirect:/";
   }
@@ -90,8 +93,8 @@ public class LineconnectController {
     session.setAttribute(SessionConst.ID, auth.getUserId());
     session.setAttribute(SessionConst.LINE_CONNECT, true);
 
-    // 挨拶文をLINEへプッシュ
-    messageService.pushHelloMessage(auth.getLineId());
+    // ログイン完了メッセージをLINEへプッシュ
+    messageService.pushLoginMessage(auth.getLineId());
 
     return "redirect:/";
   }

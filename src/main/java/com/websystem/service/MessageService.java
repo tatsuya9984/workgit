@@ -32,4 +32,19 @@ public class MessageService {
       throw new RuntimeException();
     }
   }
+
+  /**
+   * ログイン完了メッセージをプッシュ
+   * 
+   * @param lineId メッセージ送信先LINE_ID
+   */
+  public void pushLoginMessage(String lineId) {
+    try {
+      BotApiResponse res = lineMessagingClient
+        .pushMessage(new PushMessage(lineId, new TextMessage("ログインされました"))).get();
+      System.out.println(res.getMessage());
+    } catch (InterruptedException | ExecutionException e) {
+      throw new RuntimeException();
+    }
+  }
 }

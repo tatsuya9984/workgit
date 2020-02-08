@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import static java.util.Arrays.asList;
 
+import java.util.ArrayList;
+
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.Box;
@@ -29,35 +31,38 @@ import com.websystem.constant.WebsystemConst.ColorConst;
 @Component
 public class FlexMessageUtility {
 
+  public class FlexBoxList {
+    private List<FlexComponent> flexBoxList;
+    public FlexBoxList() {
+      flexBoxList = new ArrayList<FlexComponent>();
+    }
+
+    public FlexBoxList add(FlexComponent flexComponent) {
+      flexBoxList.add(flexComponent);
+      return this;
+    }
+
+    public List<FlexComponent> getFlexBoxList() {
+      return flexBoxList;
+    }
+  }
+
+  public FlexBoxList createBuilder() {
+    return new FlexBoxList();
+  }
+
   /**
    * 画像作成
    * 
    * @param url 画像のurl
    * @return 画像
    */
-  public Image createImage(String url) {
+  private Image createImage(String url) {
     return Image.builder()
         .url(url)
         .size(ImageSize.MD)
         .aspectRatio(ImageAspectRatio.R1TO1)
         .aspectMode(ImageAspectMode.Cover)
-        .build();
-  }
-
-  /**
-   * アクション付き画像の作成
-   * 
-   * @param url 画像のurl
-   * @param actionURL タップした時のリンク
-   * @return アクション付き画像
-   */
-  public Image createImage(String url, String actionURL) {
-    return Image.builder()
-        .url(url)
-        .size(ImageSize.MD)
-        .aspectRatio(ImageAspectRatio.R1TO1)
-        .aspectMode(ImageAspectMode.Cover)
-        .action(new URIAction("jump link", actionURL))
         .build();
   }
 
@@ -70,7 +75,7 @@ public class FlexMessageUtility {
    * @param aspectRatio 画像のアスペクト比
    * @return アクション付き画像
    */
-  public Image createImage(String url, String actionURL, ImageSize size, ImageAspectRatio aspectRatio) {
+  private Image createImage(String url, String actionURL, ImageSize size, ImageAspectRatio aspectRatio) {
     return Image.builder()
         .url(url)
         .size(size)
@@ -249,7 +254,7 @@ public class FlexMessageUtility {
    * @param footer フッター
    * @return Bubble
    */
-  public Bubble createBubble(List<FlexComponent> header, String heroUrl, List<FlexComponent> body, List<FlexComponent> footer) {
+  private Bubble createBubble(List<FlexComponent> header, String heroUrl, List<FlexComponent> body, List<FlexComponent> footer) {
     Box headerBox = createVerticalBlock(header);
     Image heroBox = createImage(heroUrl);
     Box bodyBox = createVerticalBlock(body);
@@ -272,7 +277,7 @@ public class FlexMessageUtility {
    * @param footer フッター
    * @return ヒーローアクション付きBubble
    */
-  public Bubble createBubbleWithHeroAction(List<FlexComponent> header, String heroUrl, String actionURL, List<FlexComponent> body, List<FlexComponent> footer) {
+  private Bubble createBubbleWithHeroAction(List<FlexComponent> header, String heroUrl, String actionURL, List<FlexComponent> body, List<FlexComponent> footer) {
     Box headerBox = createVerticalBlock(header);
     Image heroBox = createImage(heroUrl, actionURL, ImageSize.FULL_WIDTH ,ImageAspectRatio.R16TO9);
     Box bodyBox = createVerticalBlock(body);

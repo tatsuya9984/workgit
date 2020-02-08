@@ -1,6 +1,5 @@
 package com.websystem.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -30,15 +29,18 @@ public class MessageService {
    * @param lineId メッセージ送信先LINE_ID
    */
   public void pushHelloMessage(String lineId) {
-    List<FlexComponent> header = new ArrayList<FlexComponent>();
-    header.add(flexMessageUtility.createHeaderTextBox("【Fassion Talk】とは"));
+    List<FlexComponent> header = flexMessageUtility.createBuilder()
+        .add(flexMessageUtility.createHeaderTextBox("【Fassion Talk】とは"))
+        .getFlexBoxList();
     String heroURL = "https://www.shibaura1101.com/fassion/topback.png";
     String actionURL = "https://fassion-talk.herokuapp.com";
-    List<FlexComponent> body = new ArrayList<FlexComponent>();
-    body.add(flexMessageUtility.createTextBox("今流行りの服がわからない？"));
-    body.add(flexMessageUtility.createTextBox("今すぐみんなが着ている服をチェックしよう"));
-    List<FlexComponent> footer = new ArrayList<FlexComponent>();
-    footer.add(flexMessageUtility.createFooterTextaBox("fassion-talk"));
+    List<FlexComponent> body = flexMessageUtility.createBuilder()
+        .add(flexMessageUtility.createTextBox("今流行りの服がわからない？"))
+        .add(flexMessageUtility.createTextBox("今すぐみんなが着ている服をチェックしよう"))
+        .getFlexBoxList();
+    List<FlexComponent> footer = flexMessageUtility.createBuilder()
+        .add(flexMessageUtility.createFooterTextaBox("fassion-talk"))
+        .getFlexBoxList();
     try {
       BotApiResponse res = lineMessagingClient
         .pushMessage(new PushMessage(lineId, flexMessageUtility.getForBubbleWithHeroAction(header, heroURL, actionURL, body, footer))).get();
